@@ -36,9 +36,8 @@ namespace Minesweeper {
             Program.HEIGHT = Math.Clamp((int)nudSettingsHeight.Value, 9, 24);
             Program.WIDTH = Math.Clamp((int)nudSettingsWidth.Value, 9, 30);
             Program.NB_MINES = Math.Min((int)nudSettingsMines.Value, (Program.HEIGHT-1) * (Program.WIDTH-1));
-            MessageBox.Show("Height: " + Program.HEIGHT + "\nWidth: " + Program.WIDTH + "\nMines: " + Program.NB_MINES);
 
-            mainForm.newGame(Program.HEIGHT, Program.WIDTH, Program.NB_MINES);
+            mainForm.new_game(Program.HEIGHT, Program.WIDTH, Program.NB_MINES);
             this.Close();
         }
     }

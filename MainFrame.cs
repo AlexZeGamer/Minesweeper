@@ -6,11 +6,11 @@ using System.Collections.Generic;
 namespace Minesweeper {
     public partial class frmMainFrame : Form {
 
-        const int BUTTON_SIZE = 16; // in pixels
+        static int TILE_SIZE = 16; // in pixels
 
         public frmMainFrame() {
             InitializeComponent();
-            newGame(Program.HEIGHT, Program.WIDTH, Program.NB_MINES);
+            new_game(Program.HEIGHT, Program.WIDTH, Program.NB_MINES);
         }
 
         /// <summary>
@@ -27,7 +27,7 @@ namespace Minesweeper {
         /// <summary>
         /// Reset every game variables and create a new game
         /// </summary>
-        public void newGame(int height, int width, int nbMines) {
+        public void new_game(int height, int width, int nbMines) {
             Program.inGame = false;
             Program.gameLost = false;
 
@@ -39,14 +39,14 @@ namespace Minesweeper {
 
             Program.REVEALED_GRID = new bool[Program.HEIGHT, Program.WIDTH]; // grid of revealed tiles
             Program.FLAGS_GRID = new bool[Program.HEIGHT, Program.WIDTH]; // grid of flags
-            Program.MINES_GRID = shuffleMines(height, width, nbMines); // grid of mines
-            createButtonsGrid(height, width); // create the grid of buttons
+            Program.MINES_GRID = shuffle_mines(height, width, nbMines); // grid of mines
+            create_buttons_grid(height, width); // create the grid of buttons
         }
 
         /// <summary>
         /// Debug function to print the grid of mines
         /// </summary>
-        private string PrintMinesGrid() {
+        private string print_mines_grid() {
             StringBuilder sb = new StringBuilder();
 
             for (int i = 0; i < Program.HEIGHT; i++) {
@@ -64,7 +64,7 @@ namespace Minesweeper {
         /// <summary>
         /// Create a grid of mines with nbMines mines randomly placed
         /// </summary>
-        private bool[,] shuffleMines(int height, int width, int nbMines) {
+        private bool[,] shuffle_mines(int height, int width, int nbMines) {
             bool[,] mines = new bool[height, width];
             int count = 0;
 
@@ -84,33 +84,32 @@ namespace Minesweeper {
         /// <summary>
         /// Create the grid of buttons with the given dimensions and add them to the TableLayoutPanel
         /// </summary>
-        private void createButtonsGrid(int height, int width) {
+        private void create_buttons_grid(int height, int width) {
             Program.inGame = false;
             tsslStatus.Text = "Loading...";
+            this.Refresh();
 
             // creating grid with good dimensions
             tlpGrid.RowCount = height;
             tlpGrid.ColumnCount = width;
-            tlpGrid.AutoSize = true;
-            tlpGrid.AutoSizeMode = AutoSizeMode.GrowAndShrink;
 
             tlpGrid.SuspendLayout();
 
             // empty existing grid if any
             tlpGrid.Controls.Clear();
-            
+
             // adding buttons
             for (int x = 0; x < height; x++) {
                 for (int y = 0; y < width; y++) {
                     Button btn = create_button();
                     tlpGrid.Controls.Add(btn, y, x);
                 }
-            
             }
-            tlpGrid.ResumeLayout();
+
+            tlpGrid.ResumeLayout(true);
 
             Program.inGame = true;
-            updateStatusText();
+            update_status_text();
         }
 
         /// <summary>
@@ -123,10 +122,10 @@ namespace Minesweeper {
             button.FlatAppearance.BorderSize = 0;
             button.FlatStyle = FlatStyle.Flat;
             button.Margin = new Padding(0);
-            button.Size = new Size(BUTTON_SIZE, BUTTON_SIZE);
+            button.Size = new Size(TILE_SIZE, TILE_SIZE);
 
             // add event handler
-            button.MouseUp += new MouseEventHandler(tileClick);
+            button.MouseUp += new MouseEventHandler(tile_click);
 
             return button;
         }
@@ -134,7 +133,7 @@ namespace Minesweeper {
         /// <summary>
         /// Handle the click on a tile (left, right or middle click) and call the appropriate functions
         /// </summary>
-        private void tileClick(object sender, MouseEventArgs e) {
+        private void tile_click(object sender, MouseEventArgs e) {
             // if the game is not running or if the game is over, do nothing
             if (!Program.inGame || Program.gameLost) { return; }
 
@@ -145,50 +144,50 @@ namespace Minesweeper {
 
             switch (e.Button) {
                 case MouseButtons.Left:
-                    leftClick(x, y);
+                    left_click(x, y);
                     break;
 
                 case MouseButtons.Right:
-                    rightClick(x, y);
+                    right_click(x, y);
                     break;
 
                 case MouseButtons.Middle:
-                    middleClick(x, y);
+                    middle_click(x, y);
                     break;
 
                 default: break;
             }
 
-            updateStatusText();
+            update_status_text();
         }
 
         /// <summary>
         /// Handle left click on a tile (revealing the tile)
         /// </summary>
-        private void leftClick(int x, int y) {
-            if (isFlag(x, y)) { return; } // if the tile is flagged, do nothing
+        private void left_click(int x, int y) {
+            if (is_flag(x, y)) { return; } // if the tile is flagged, do nothing
 
             // if the player clicks on a mine, he loses
-            if (isMine(x, y)) {
-                gameLost(x, y);
+            if (is_mine(x, y)) {
+                game_lost(x, y);
                 return;
             }
 
             // if the tile has already been revealed and all adjacent mines flagged, clear the surroundings of the tile
-            if (isRevealed(x, y)) {
-                clearSurroundings(x, y);
+            if (is_revealed(x, y)) {
+                clear_surroundings(x, y);
                 return;
             }
 
             // if the player clicks on a tile with adjacent mines, reveal the tile
-            if (!isRevealed(x, y) && getNbAdjacentMines(x, y) > 0) {
-                revealTile(x, y);
+            if (!is_revealed(x, y) && get_nb_adjacent_mines(x, y) > 0) {
+                reveal_tile(x, y);
                 return;
             }
 
             // if the player clicks on a tile with no adjacent mines, flood fill
-            if (!isRevealed(x, y) && getNbAdjacentMines(x, y) == 0) {
-                floodFill(x, y);
+            if (!is_revealed(x, y) && get_nb_adjacent_mines(x, y) == 0) {
+                flood_fill(x, y);
                 return;
             }
         }
@@ -196,11 +195,11 @@ namespace Minesweeper {
         /// <summary>
         /// Handle right click on a tile (flagging)
         /// </summary>
-        private void rightClick(int x, int y) {
+        private void right_click(int x, int y) {
             // if the tile is not revealed, change the status of the flag
             // (if not flagged -> flag, if flagged -> unflag)
-            if (!isRevealed(x, y)) {
-                setFlag(x, y, !isFlag(x, y));
+            if (!is_revealed(x, y)) {
+                set_flag(x, y, !is_flag(x, y));
                 return;
             }
         }
@@ -208,12 +207,12 @@ namespace Minesweeper {
         /// <summary>
         /// Handle middle click on a tile (clearing surroundings)
         /// </summary>
-        private void middleClick(int x, int y) {
-            if (isFlag(x, y)) { return; } // if the tile is flagged, do nothing
+        private void middle_click(int x, int y) {
+            if (is_flag(x, y)) { return; } // if the tile is flagged, do nothing
 
             // if the tile has already been revealed and all adjacent mines flagged, clear the surroundings of the tile
-            if (isRevealed(x, y)) {
-                clearSurroundings(x, y);
+            if (is_revealed(x, y)) {
+                clear_surroundings(x, y);
                 return;
             }
         }
@@ -221,31 +220,31 @@ namespace Minesweeper {
         /// <summary>
         /// Set if a tile is flagged or not
         /// </summary>
-        private void setFlag(int x, int y, bool flag) {
+        private void set_flag(int x, int y, bool flag) {
             Program.FLAGS_GRID[x, y] = flag;
 
             if (flag) {
-                setTileState(x, y, Properties.Resources.undiscovered_with_flag);
+                set_tile_state(x, y, Properties.Resources.undiscovered_with_flag);
                 Program.nbMinesRemaining--;
             } else {
-                setTileState(x, y, Properties.Resources.undiscovered);
+                set_tile_state(x, y, Properties.Resources.undiscovered);
                 Program.nbMinesRemaining++;
             }
 
-            updateStatusText();
+            update_status_text();
         }
 
         /// <summary>
         /// Clear the surroundings of the tile at position (x, y) if all the surrounding mines are flagged
         /// </summary>
-        private void clearSurroundings(int x, int y) {
+        private void clear_surroundings(int x, int y) {
             // if the number of adjacent flags is equal to the number of adjacent mines, clear the surroundings (reveal all the tiles that are not flagged)
-            if (getNbAdjacentFlags(x, y) == getNbAdjacentMines(x, y)) {
+            if (get_nb_adjacent_flags(x, y) == get_nb_adjacent_mines(x, y)) {
                 for (int i = Math.Max(x - 1, 0); i <= Math.Min(x + 1, Program.HEIGHT - 1); i++) {
                     for (int j = Math.Max(y - 1, 0); j <= Math.Min(y + 1, Program.WIDTH - 1); j++) {
-                        if (!isFlag(i, j)) {
-                            floodFill(i, j);
-                            revealTile(i, j);
+                        if (!is_flag(i, j)) {
+                            flood_fill(i, j);
+                            reveal_tile(i, j);
                         }
                     }
                 }
@@ -255,7 +254,7 @@ namespace Minesweeper {
         /// <summary>
         /// Change the sprite of a tile to a given sprite
         /// </summary>
-        private void setTileState(int x, int y, Bitmap sprite) {
+        private void set_tile_state(int x, int y, Bitmap sprite) {
             Button btn = (Button)tlpGrid.GetControlFromPosition(y, x);
             btn.BackgroundImage = sprite;
         }
@@ -263,88 +262,88 @@ namespace Minesweeper {
         /// <summary>
         /// Return if a tile is a mine or not
         /// </summary>
-        private bool isMine(int x, int y) {
+        private bool is_mine(int x, int y) {
             return Program.MINES_GRID[x, y];
         }
 
         /// <summary>
         /// Return is a tile is flagged or not
         /// </summary>
-        private bool isFlag(int x, int y) {
+        private bool is_flag(int x, int y) {
             return Program.FLAGS_GRID[x, y];
         }
 
         /// <summary>
         /// Return if a tile is revealed or not
         /// </summary>
-        private bool isRevealed(int x, int y) {
+        private bool is_revealed(int x, int y) {
             return Program.REVEALED_GRID[x, y];
         }
 
         /// <summary>
         /// Set a tile to a revealed state and set the sprite to the appropriate number of adjacent mines
         /// </summary>
-        private void revealTile(int x, int y) {
-            if (isRevealed(x, y)) { return; }
+        private void reveal_tile(int x, int y) {
+            if (is_revealed(x, y)) { return; }
 
-            if (isMine(x, y)) {
-                gameLost(x, y);
+            if (is_mine(x, y)) {
+                game_lost(x, y);
             } else {
                 Program.REVEALED_GRID[x, y] = true;
-                setTileSpriteToNbAdjacentMines(x, y);
+                set_tile_sprite_to_nb_adjacent_mines(x, y);
             }
 
-            if (checkWin()) {
-                gameWon();
+            if (check_win()) {
+                game_won();
             }
         }
 
         /// <summary>
         /// Handle game lost event and reveal all the mines
         /// </summary>
-        private void gameLost(int x, int y) {
+        private void game_lost(int x, int y) {
             Program.inGame = false;
             Program.gameLost = true;
 
             // Reveal all the mines (except flags)
             for (int i = 0; i < Program.HEIGHT; i++) {
                 for (int j = 0; j < Program.WIDTH; j++) {
-                    if (isMine(i, j) && !isFlag(i, j)) {
-                        setTileState(i, j, Properties.Resources.discovered_bomb);
+                    if (is_mine(i, j) && !is_flag(i, j)) {
+                        set_tile_state(i, j, Properties.Resources.discovered_bomb);
                     }
 
-                    if (!isMine(i, j) && isFlag(i, j)) {
-                        setTileState(i, j, Properties.Resources.discovered_wrong_flag);
+                    if (!is_mine(i, j) && is_flag(i, j)) {
+                        set_tile_state(i, j, Properties.Resources.discovered_wrong_flag);
                     }
                 }
             }
 
             // Set the mine that was clicked to a red mine sprite instead of the default one
             // to indicate that it was the mine that killed the player
-            setTileState(x, y, Properties.Resources.discovered_bomb_red);
+            set_tile_state(x, y, Properties.Resources.discovered_bomb_red);
 
-            updateStatusText();
+            update_status_text();
         }
 
         /// <summary>
         /// Handle game win event
         /// </summary>
-        private void gameWon() {
+        private void game_won() {
             Program.inGame = false;
 
             // Reveal all the mines as flags
             for (int i = 0; i < Program.HEIGHT; i++) {
                 for (int j = 0; j < Program.WIDTH; j++) {
-                    if (isMine(i, j)) {
-                        setTileState(i, j, Properties.Resources.undiscovered_with_flag);
+                    if (is_mine(i, j)) {
+                        set_tile_state(i, j, Properties.Resources.undiscovered_with_flag);
                     }
                 }
             }
 
-            updateStatusText();
+            update_status_text();
         }
 
-        private bool checkWin() {
+        private bool check_win() {
             int count = 0;
 
             // Count the number of tiles that are not revealed
@@ -364,8 +363,8 @@ namespace Minesweeper {
         /// <summary>
         /// Set the tile at position (x, y) to the appropriate sprite depending on the number of adjacent mines
         /// </summary>
-        private void setTileSpriteToNbAdjacentMines(int x, int y) {
-            int nbAdjacentMines = getNbAdjacentMines(x, y);
+        private void set_tile_sprite_to_nb_adjacent_mines(int x, int y) {
+            int nbAdjacentMines = get_nb_adjacent_mines(x, y);
             Bitmap[] sprites = new Bitmap[9] {
                 Properties.Resources.discovered,
                 Properties.Resources.discovered_1,
@@ -378,14 +377,14 @@ namespace Minesweeper {
                 Properties.Resources.discovered_8
             };
 
-            setTileState(x, y, sprites[nbAdjacentMines]);
+            set_tile_state(x, y, sprites[nbAdjacentMines]);
         }
 
 
         /// <summary>
         /// Return the number of adjacent mines of the tile at position (x, y)
         /// </summary>
-        private int getNbAdjacentMines(int x, int y) {
+        private int get_nb_adjacent_mines(int x, int y) {
             int count = 0;
 
             for (int i = Math.Max(x - 1, 0); i <= Math.Min(x + 1, Program.HEIGHT - 1); i++) {
@@ -401,7 +400,7 @@ namespace Minesweeper {
         /// <summary>
         /// Return the number of adjacent flags of the tile at position (x, y)
         /// </summary>
-        private int getNbAdjacentFlags(int x, int y) {
+        private int get_nb_adjacent_flags(int x, int y) {
             int count = 0;
 
             for (int i = Math.Max(x - 1, 0); i <= Math.Min(x + 1, Program.HEIGHT - 1); i++) {
@@ -418,37 +417,37 @@ namespace Minesweeper {
         /// <summary>
         /// Recursively reveal all the tiles that are not adjacent to any mine (flood fill algorithm) if the clicked tile is not adjacent to any mine
         /// </summary>
-        private void floodFill(int x, int y) {
+        private void flood_fill(int x, int y) {
             // if (x < 0 || x >= Program.HEIGHT || y < 0 || y >= Program.WIDTH)
 
             // If the tile is already revealed, do nothing
-            if (isRevealed(x, y)) { return; }
+            if (is_revealed(x, y)) { return; }
 
             // If the tile is a mine, do nothing
             if (Program.MINES_GRID[x, y]) { return; }
 
-            int numAdjacentMines = getNbAdjacentMines(x, y);
-            revealTile(x, y);
+            int numAdjacentMines = get_nb_adjacent_mines(x, y);
+            reveal_tile(x, y);
 
             if (numAdjacentMines == 0) {
                 for (int i = Math.Max(x - 1, 0); i <= Math.Min(x + 1, Program.HEIGHT - 1); i++) {
                     for (int j = Math.Max(y - 1, 0); j <= Math.Min(y + 1, Program.WIDTH - 1); j++) {
-                        floodFill(i, j);
+                        flood_fill(i, j);
                     }
                 }
             }
         }
 
-        private void updateStatusText() {
+        private void update_status_text() {
             tsslStatus.Text = "Remaining mines: " + Program.nbMinesRemaining;
 
-            if (checkWin()) { tsslStatus.Text += " - 😎"; } else if (Program.gameLost) { tsslStatus.Text += " - 😵"; } else { tsslStatus.Text += " - 😊"; }
+            if (check_win()) { tsslStatus.Text += " - 😎"; } else if (Program.gameLost) { tsslStatus.Text += " - 😵"; } else { tsslStatus.Text += " - 😊"; }
         }
 
 
 
         private void tsmiNewGame_Click(object sender, EventArgs e) {
-            newGame(Program.HEIGHT, Program.WIDTH, Program.NB_MINES);
+            new_game(Program.HEIGHT, Program.WIDTH, Program.NB_MINES);
         }
 
         private void tsmiDifficulty_Click(object sender, EventArgs e) {
@@ -471,20 +470,20 @@ namespace Minesweeper {
             // Do something with the difficulty level.
             switch (difficultyLevel) {
                 case "Beginner":
-                    newGame(9, 9, 10);
+                    new_game(9, 9, 10);
                     break;
                 case "Intermediate":
-                    newGame(16, 16, 40);
+                    new_game(16, 16, 40);
                     break;
                 case "Expert":
-                    newGame(16, 30, 99);
+                    new_game(16, 30, 99);
                     break;
                 case "Custom":
                     frmCustomGameSettings settingsForm = Program.settingsForm;
                     settingsForm.ShowDialog();
                     break;
                 default:
-                    newGame(Program.HEIGHT, Program.WIDTH, Program.NB_MINES);
+                    new_game(Program.HEIGHT, Program.WIDTH, Program.NB_MINES);
                     break;
             }
         }
@@ -501,6 +500,19 @@ namespace Minesweeper {
 
             MessageBoxButtons buttons = MessageBoxButtons.OK;
             MessageBox.Show(message, title, buttons, MessageBoxIcon.Information);
+        }
+
+        private void tsmiBiggerTiles_Click(object sender, EventArgs e) {
+            ToolStripMenuItem tsmi = (ToolStripMenuItem)sender;
+
+            if (tsmi.Checked) {
+                TILE_SIZE = 32;
+            } else {
+                TILE_SIZE = 16;
+            }
+
+            // reload a game with the new size
+            new_game(Program.HEIGHT, Program.WIDTH, Program.NB_MINES);
         }
     }
 }
