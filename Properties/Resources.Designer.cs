@@ -173,6 +173,16 @@ namespace Minesweeper.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap discovered_wrong_flag {
+            get {
+                object obj = ResourceManager.GetObject("discovered_wrong_flag", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap undiscovered {
             get {
                 object obj = ResourceManager.GetObject("undiscovered", resourceCulture);

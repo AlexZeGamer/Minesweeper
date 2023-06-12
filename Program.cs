@@ -2,16 +2,27 @@ namespace Minesweeper
 {
     internal static class Program
     {
-        /// <summary>
-        ///  The main entry point for the application.
-        /// </summary>
-        [STAThread]
+        // Game settings
+        public static int HEIGHT = 9; // number of rows
+        public static int WIDTH = 9; // number of columns
+        public static int NB_MINES = 10; // number of mines
+
+        // Game variables
+        public static bool inGame;
+        public static bool gameLost;
+        public static bool[,]? MINES_GRID;
+        public static bool[,]? FLAGS_GRID;
+        public static bool[,]? REVEALED_GRID;
+        public static int nbMinesRemaining;
+
+        // Forms
+        public static frmMainFrame mainForm = new frmMainFrame();
+        public static frmCustomGameSettings settingsForm = new frmCustomGameSettings(mainForm);
+
         static void Main()
         {
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new MainFrame());
+            Application.Run(mainForm);
         }
     }
 }

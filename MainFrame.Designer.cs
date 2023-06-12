@@ -1,5 +1,5 @@
 ﻿namespace Minesweeper {
-    partial class MainFrame {
+    partial class frmMainFrame {
         /// <summary>
         ///  Required designer variable.
         /// </summary>
@@ -23,7 +23,7 @@
         ///  the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainFrame));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMainFrame));
             mnsToolbar = new MenuStrip();
             tsmiGame = new ToolStripMenuItem();
             tsmiNewGame = new ToolStripMenuItem();
@@ -37,7 +37,7 @@
             tsmiHelp = new ToolStripMenuItem();
             tsmiAboutMinesweeper = new ToolStripMenuItem();
             ssrStatusStrip = new StatusStrip();
-            toolStripStatusLabel1 = new ToolStripStatusLabel();
+            tsslStatus = new ToolStripStatusLabel();
             tlpGrid = new TableLayoutPanel();
             mnsToolbar.SuspendLayout();
             ssrStatusStrip.SuspendLayout();
@@ -142,52 +142,57 @@
             // 
             // ssrStatusStrip
             // 
-            ssrStatusStrip.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             ssrStatusStrip.AutoSize = false;
-            ssrStatusStrip.Dock = DockStyle.None;
-            ssrStatusStrip.Items.AddRange(new ToolStripItem[] { toolStripStatusLabel1 });
+            ssrStatusStrip.BackColor = Color.FromArgb(224, 224, 224);
+            ssrStatusStrip.Dock = DockStyle.Top;
+            ssrStatusStrip.Items.AddRange(new ToolStripItem[] { tsslStatus });
             ssrStatusStrip.LayoutStyle = ToolStripLayoutStyle.HorizontalStackWithOverflow;
-            ssrStatusStrip.Location = new Point(0, 243);
+            ssrStatusStrip.Location = new Point(0, 24);
             ssrStatusStrip.Name = "ssrStatusStrip";
             ssrStatusStrip.RenderMode = ToolStripRenderMode.Professional;
-            ssrStatusStrip.Size = new Size(166, 22);
+            ssrStatusStrip.Size = new Size(229, 30);
             ssrStatusStrip.SizingGrip = false;
             ssrStatusStrip.TabIndex = 1;
             // 
-            // toolStripStatusLabel1
+            // tsslStatus
             // 
-            toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            toolStripStatusLabel1.Size = new Size(118, 17);
-            toolStripStatusLabel1.Text = "toolStripStatusLabel1";
+            tsslStatus.Name = "tsslStatus";
+            tsslStatus.Size = new Size(25, 25);
+            tsslStatus.Text = "      ";
             // 
             // tlpGrid
             // 
+            tlpGrid.BackColor = Color.Gray;
             tlpGrid.ColumnCount = 2;
             tlpGrid.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tlpGrid.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tlpGrid.Location = new Point(0, 24);
-            tlpGrid.Margin = new Padding(0);
+            tlpGrid.Location = new Point(7, 63);
+            tlpGrid.Margin = new Padding(7);
             tlpGrid.Name = "tlpGrid";
-            tlpGrid.Padding = new Padding(10);
+            tlpGrid.Padding = new Padding(3);
             tlpGrid.RowCount = 2;
             tlpGrid.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tlpGrid.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tlpGrid.Size = new Size(226, 211);
+            tlpGrid.Size = new Size(206, 181);
             tlpGrid.TabIndex = 2;
             // 
-            // MainFrame
+            // frmMainFrame
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
+            AutoScaleDimensions = new SizeF(96F, 96F);
+            AutoScaleMode = AutoScaleMode.Dpi;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            BackColor = Color.Silver;
             ClientSize = new Size(229, 265);
             Controls.Add(tlpGrid);
             Controls.Add(ssrStatusStrip);
             Controls.Add(mnsToolbar);
+            FormBorderStyle = FormBorderStyle.Fixed3D;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MainMenuStrip = mnsToolbar;
-            Name = "MainFrame";
+            MaximizeBox = false;
+            Name = "frmMainFrame";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Minesweeper";
             mnsToolbar.ResumeLayout(false);
             mnsToolbar.PerformLayout();
@@ -213,6 +218,6 @@
         private ToolStripSeparator tssSeparator2;
         private StatusStrip ssrStatusStrip;
         private TableLayoutPanel tlpGrid;
-        private ToolStripStatusLabel toolStripStatusLabel1;
+        private ToolStripStatusLabel tsslStatus;
     }
 }
