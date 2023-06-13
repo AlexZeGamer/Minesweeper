@@ -8,12 +8,13 @@ namespace Minesweeper
         public static int NB_MINES = 10; // number of mines
 
         // Game variables
-        public static bool inGame;
-        public static bool gameLost;
         public static bool[,]? MINES_GRID;
         public static bool[,]? FLAGS_GRID;
         public static bool[,]? REVEALED_GRID;
+        public static bool inGame;
+        public static bool gameLost;
         public static int nbMinesRemaining;
+        public static int nbClicks;
 
         // Forms
         public static frmMainFrame mainForm = new frmMainFrame();

@@ -30,6 +30,7 @@ namespace Minesweeper {
         public void new_game(int height, int width, int nbMines) {
             Program.inGame = false;
             Program.gameLost = false;
+            Program.nbClicks = 0;
 
             Program.HEIGHT = height;
             Program.WIDTH = width;
@@ -167,8 +168,19 @@ namespace Minesweeper {
         private void left_click(int x, int y) {
             if (is_flag(x, y)) { return; } // if the tile is flagged, do nothing
 
+
             // if the player clicks on a mine, he loses
-            if (is_mine(x, y)) {
+            if (!is_revealed(x, y) && is_mine(x, y)) {
+                
+                // Prevents the player from losing on the first click
+                if (Program.nbClicks == 0) {
+                    while (is_mine(x, y)) {
+                        Program.MINES_GRID = shuffle_mines(Program.HEIGHT, Program.WIDTH, Program.NB_MINES);
+                    }
+                    left_click(x, y); // call the function again to reveal the tile
+                    return;
+                }
+                
                 game_lost(x, y);
                 return;
             }
@@ -176,20 +188,20 @@ namespace Minesweeper {
             // if the tile has already been revealed and all adjacent mines flagged, clear the surroundings of the tile
             if (is_revealed(x, y)) {
                 clear_surroundings(x, y);
-                return;
             }
 
             // if the player clicks on a tile with adjacent mines, reveal the tile
             if (!is_revealed(x, y) && get_nb_adjacent_mines(x, y) > 0) {
+                if (Program.nbClicks > 0) { }
                 reveal_tile(x, y);
-                return;
             }
 
             // if the player clicks on a tile with no adjacent mines, flood fill
             if (!is_revealed(x, y) && get_nb_adjacent_mines(x, y) == 0) {
                 flood_fill(x, y);
-                return;
             }
+
+            Program.nbClicks++;
         }
 
         /// <summary>
