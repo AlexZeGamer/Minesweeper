@@ -6,6 +6,7 @@ namespace Minesweeper
         public static int HEIGHT = 9; // number of rows
         public static int WIDTH = 9; // number of columns
         public static int NB_MINES = 10; // number of mines
+        public static bool invincibleMode = false;
 
         // Game variables
         public static bool[,]? MINES_GRID;

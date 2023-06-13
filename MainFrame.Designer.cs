@@ -212,6 +212,7 @@
             Name = "frmMainFrame";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Minesweeper";
+            KeyUp += frmMainFrame_KeyUp;
             mnsToolbar.ResumeLayout(false);
             mnsToolbar.PerformLayout();
             ssrStatusStrip.ResumeLayout(false);

@@ -2,13 +2,17 @@ using System;
 using System.Text;
 using System.Diagnostics;
 using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace Minesweeper {
+
     public partial class frmMainFrame : Form {
+        private KonamiSequence sequence = new KonamiSequence(); // Konami sequence
 
         static int TILE_SIZE = 16; // in pixels
 
         public frmMainFrame() {
+            this.KeyPreview = true; // Allows the form to process key events
             InitializeComponent();
             new_game(Program.HEIGHT, Program.WIDTH, Program.NB_MINES);
         }
@@ -90,11 +94,11 @@ namespace Minesweeper {
             tsslStatus.Text = "Loading...";
             this.Refresh();
 
+            tlpGrid.SuspendLayout();
+
             // creating grid with good dimensions
             tlpGrid.RowCount = height;
             tlpGrid.ColumnCount = width;
-
-            tlpGrid.SuspendLayout();
 
             // empty existing grid if any
             tlpGrid.Controls.Clear();
@@ -171,7 +175,7 @@ namespace Minesweeper {
 
             // if the player clicks on a mine, he loses
             if (!is_revealed(x, y) && is_mine(x, y)) {
-                
+
                 // Prevents the player from losing on the first click
                 if (Program.nbClicks == 0) {
                     while (is_mine(x, y)) {
@@ -180,7 +184,12 @@ namespace Minesweeper {
                     left_click(x, y); // call the function again to reveal the tile
                     return;
                 }
-                
+
+                if (Program.invincibleMode) {
+                    set_flag(x, y, !is_flag(x, y));
+                    return;
+                }
+
                 game_lost(x, y);
                 return;
             }
@@ -525,6 +534,14 @@ namespace Minesweeper {
 
             // reload a game with the new size
             new_game(Program.HEIGHT, Program.WIDTH, Program.NB_MINES);
+        }
+
+        private void frmMainFrame_KeyUp(object sender, KeyEventArgs e) {
+            // If the sequence is completed, enable invincible mode
+            if (sequence.IsCompletedBy(e.KeyCode)) {
+                MessageBox.Show("INVINCIBLE!!!");
+                Program.invincibleMode = true;
+            }
         }
     }
 }
