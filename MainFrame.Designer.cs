@@ -41,6 +41,8 @@
             ssrStatusStrip = new StatusStrip();
             tsslStatus = new ToolStripStatusLabel();
             tlpGrid = new TableLayoutPanel();
+            toolStripSeparator2 = new ToolStripSeparator();
+            tsmiGithub = new ToolStripMenuItem();
             mnsToolbar.SuspendLayout();
             ssrStatusStrip.SuspendLayout();
             SuspendLayout();
@@ -142,7 +144,7 @@
             // 
             // tsmiHelp
             // 
-            tsmiHelp.DropDownItems.AddRange(new ToolStripItem[] { tsmiAboutMinesweeper });
+            tsmiHelp.DropDownItems.AddRange(new ToolStripItem[] { tsmiAboutMinesweeper, toolStripSeparator2, tsmiGithub });
             tsmiHelp.Name = "tsmiHelp";
             tsmiHelp.Size = new Size(44, 24);
             tsmiHelp.Text = "Help";
@@ -194,6 +196,18 @@
             tlpGrid.Size = new Size(144, 144);
             tlpGrid.TabIndex = 2;
             // 
+            // toolStripSeparator2
+            // 
+            toolStripSeparator2.Name = "toolStripSeparator2";
+            toolStripSeparator2.Size = new Size(196, 6);
+            // 
+            // tsmiGithub
+            // 
+            tsmiGithub.Name = "tsmiGithub";
+            tsmiGithub.Size = new Size(199, 22);
+            tsmiGithub.Text = "View on Github";
+            tsmiGithub.Click += tsmiGithub_Click;
+            // 
             // frmMainFrame
             // 
             AutoScaleDimensions = new SizeF(96F, 96F);
@@ -240,5 +254,7 @@
         private ToolStripStatusLabel tsslStatus;
         private ToolStripSeparator toolStripSeparator1;
         private ToolStripMenuItem tsmiBiggerTiles;
+        private ToolStripSeparator toolStripSeparator2;
+        private ToolStripMenuItem tsmiGithub;
     }
 }

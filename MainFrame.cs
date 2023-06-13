@@ -3,6 +3,8 @@ using System.Text;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using Microsoft.Win32;
+using System.Security.Policy;
 
 namespace Minesweeper {
 
@@ -542,6 +544,18 @@ namespace Minesweeper {
                 MessageBox.Show("INVINCIBLE!!!");
                 Program.invincibleMode = true;
             }
+        }
+
+        private void tsmiGithub_Click(object sender, EventArgs e) {
+            string key = @"htmlfile\shell\open\command";
+            RegistryKey registryKey = Registry.ClassesRoot.OpenSubKey(key, false);
+            // Get the default browser path on the system
+            string Default_Browser_Path = ((string)registryKey.GetValue(null, null)).Split('"')[1];
+
+            Process p = new Process();
+            p.StartInfo.FileName = Default_Browser_Path;
+            p.StartInfo.Arguments = "https://github.com/AlexZeGamer/Minesweeper";
+            p.Start();
         }
     }
 }
