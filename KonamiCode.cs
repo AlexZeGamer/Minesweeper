@@ -1,3 +1,6 @@
+// Shamefully stolen from StackOverflow:
+// https://stackoverflow.com/questions/469798/konami-code-in-c-sharp
+
 namespace Minesweeper {
     public class KonamiSequence {
 
