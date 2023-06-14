@@ -557,5 +557,28 @@ namespace Minesweeper {
             p.StartInfo.Arguments = "https://github.com/AlexZeGamer/Minesweeper";
             p.Start();
         }
+
+        private void tsmiHowToPlay_Click(object sender, EventArgs e) {
+            String title = "How to play";
+            string rules = "Minesweeper is a classic computer game where you need to uncover all the cells on a grid without hitting any mines." + Environment.NewLine
+                + Environment.NewLine
+                + "Rules:" + Environment.NewLine
+                + " - The game board consists of a grid of cells, some of which contain hidden mines." + Environment.NewLine
+                + " - Your goal is to reveal all the cells that do not contain mines." + Environment.NewLine
+                + " - If you reveal a cell that contains a mine, the game ends, and you lose." + Environment.NewLine
+                + " - If you reveal a cell that does not contain a mine, it will display a number indicating the total number of mines in the adjacent cells (including diagonals)." + Environment.NewLine
+                + " - If you reveal a cell with no adjacent mines, it will reveal all adjacent cells." + Environment.NewLine
+                + " - You can use this information to deduce which cells are safe to reveal." + Environment.NewLine
+                + Environment.NewLine
+                + "Controls:" + Environment.NewLine
+                + "- Left click: reveal a cell" + Environment.NewLine
+                + "- Right click: add a flag to a cell" + Environment.NewLine
+                + "- Middle click: reveal all adjacent cells if all mines arround are flagged" + Environment.NewLine
+                + Environment.NewLine
+                + "Good luck and enjoy playing Minesweeper!";
+
+            MessageBoxButtons buttons = MessageBoxButtons.OK;
+            MessageBox.Show(rules, title, buttons, MessageBoxIcon.Information);
+        }
     }
 }

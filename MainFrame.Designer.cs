@@ -38,11 +38,12 @@
             tsmiExit = new ToolStripMenuItem();
             tsmiHelp = new ToolStripMenuItem();
             tsmiAboutMinesweeper = new ToolStripMenuItem();
+            toolStripSeparator2 = new ToolStripSeparator();
+            tsmiGithub = new ToolStripMenuItem();
             ssrStatusStrip = new StatusStrip();
             tsslStatus = new ToolStripStatusLabel();
             tlpGrid = new TableLayoutPanel();
-            toolStripSeparator2 = new ToolStripSeparator();
-            tsmiGithub = new ToolStripMenuItem();
+            tsmiHowToPlay = new ToolStripMenuItem();
             mnsToolbar.SuspendLayout();
             ssrStatusStrip.SuspendLayout();
             SuspendLayout();
@@ -144,7 +145,7 @@
             // 
             // tsmiHelp
             // 
-            tsmiHelp.DropDownItems.AddRange(new ToolStripItem[] { tsmiAboutMinesweeper, toolStripSeparator2, tsmiGithub });
+            tsmiHelp.DropDownItems.AddRange(new ToolStripItem[] { tsmiAboutMinesweeper, tsmiHowToPlay, toolStripSeparator2, tsmiGithub });
             tsmiHelp.Name = "tsmiHelp";
             tsmiHelp.Size = new Size(44, 24);
             tsmiHelp.Text = "Help";
@@ -156,6 +157,18 @@
             tsmiAboutMinesweeper.Size = new Size(199, 22);
             tsmiAboutMinesweeper.Text = "About Minesweeper";
             tsmiAboutMinesweeper.Click += tsmiAboutMinesweeper_Click;
+            // 
+            // toolStripSeparator2
+            // 
+            toolStripSeparator2.Name = "toolStripSeparator2";
+            toolStripSeparator2.Size = new Size(196, 6);
+            // 
+            // tsmiGithub
+            // 
+            tsmiGithub.Name = "tsmiGithub";
+            tsmiGithub.Size = new Size(199, 22);
+            tsmiGithub.Text = "View on Github";
+            tsmiGithub.Click += tsmiGithub_Click;
             // 
             // ssrStatusStrip
             // 
@@ -196,17 +209,12 @@
             tlpGrid.Size = new Size(144, 144);
             tlpGrid.TabIndex = 2;
             // 
-            // toolStripSeparator2
+            // tsmiHowToPlay
             // 
-            toolStripSeparator2.Name = "toolStripSeparator2";
-            toolStripSeparator2.Size = new Size(196, 6);
-            // 
-            // tsmiGithub
-            // 
-            tsmiGithub.Name = "tsmiGithub";
-            tsmiGithub.Size = new Size(199, 22);
-            tsmiGithub.Text = "View on Github";
-            tsmiGithub.Click += tsmiGithub_Click;
+            tsmiHowToPlay.Name = "tsmiHowToPlay";
+            tsmiHowToPlay.Size = new Size(199, 22);
+            tsmiHowToPlay.Text = "How to play";
+            tsmiHowToPlay.Click += tsmiHowToPlay_Click;
             // 
             // frmMainFrame
             // 
@@ -256,5 +264,6 @@
         private ToolStripMenuItem tsmiBiggerTiles;
         private ToolStripSeparator toolStripSeparator2;
         private ToolStripMenuItem tsmiGithub;
+        private ToolStripMenuItem tsmiHowToPlay;
     }
 }
